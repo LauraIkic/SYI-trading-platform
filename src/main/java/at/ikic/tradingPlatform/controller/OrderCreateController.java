@@ -34,7 +34,7 @@ public class OrderCreateController {
     private OrderService orderService;
 
     @PostMapping("/order")
-    private ResponseEntity<Order> createOrder(@RequestBody OrderCreateDto data){
+    public ResponseEntity<Order> createOrder(@RequestBody OrderCreateDto data){
         Coin c =  coinConsumer.coins.stream()
                 .filter(coin -> coin.getId().equals(data.getCoinId()))
                 .findFirst()
