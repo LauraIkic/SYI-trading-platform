@@ -1,0 +1,12 @@
+# Ignoriere den target-Ordner
+target/
+
+# Ignoriere IDE-spezifische Dateien
+.idea/
+
+# Ignoriere MacOS-Dateien
+.DS_Store
+
+# Ignoriere die Maven Wrapper-Dateien (falls du sie nicht benötigst)
+mvnw
+mvnw.cmd
