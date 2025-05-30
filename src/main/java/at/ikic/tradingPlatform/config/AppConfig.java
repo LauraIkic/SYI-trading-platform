@@ -1,5 +1,4 @@
 package at.ikic.tradingPlatform.config;
-
 import at.ikic.tradingPlatform.security.JwtTokenValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,10 +21,10 @@ public class AppConfig {
         httpSecurity
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/**").authenticated()
+                        //.requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
+                //.addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())); // 👈 uses the method below
 

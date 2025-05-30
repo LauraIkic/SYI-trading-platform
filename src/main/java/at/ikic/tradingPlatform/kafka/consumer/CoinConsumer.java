@@ -2,6 +2,8 @@ package at.ikic.tradingPlatform.kafka.consumer;
 
 import at.ikic.tradingPlatform.constants.KafkaConstant;
 import at.ikic.tradingPlatform.entity.Coin;
+import at.ikic.tradingPlatform.repository.CoinRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.kafka.annotation.KafkaListener;
 
@@ -12,9 +14,12 @@ public class CoinConsumer {
 
     public List<Coin> coins;
 
+    @Autowired
+    private CoinRepository coinRepository;
+
     @KafkaListener(topics = KafkaConstant.CRYPTO_COIN_TOPIC, groupId = KafkaConstant.CRYPTO_GROUP, containerFactory = "kafkaListenerContainerFactoryCoin")
-    public void consume(List<Coin> coins)
-    {
+    public void consume(List<Coin> coins) {
         this.coins = coins;
+        coinRepository.saveAll(coins); // <-- speichert alle Coins in die DB
     }
 }
