@@ -23,6 +23,7 @@ public class AppConfig {
                         .requestMatchers("/api/auth/**").permitAll()  // Auth-Endpoints öffentlich
                         .requestMatchers("/api/coin/**").permitAll()  // Coin-Endpoints öffentlich
                         .requestMatchers("/api/order/**").authenticated() // Order-Endpoints nur für authentifizierte User
+                        .requestMatchers("/api/wallet/**").authenticated() // HINZUGEFÜGT
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)

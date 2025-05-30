@@ -1,12 +1,15 @@
 package at.ikic.tradingPlatform.controller;
 
 import at.ikic.tradingPlatform.dto.request.AuthRequestDto;
+import at.ikic.tradingPlatform.dto.UserDto;
 import at.ikic.tradingPlatform.entity.User;
 import at.ikic.tradingPlatform.mapper.AuthResponseMapper;
 import at.ikic.tradingPlatform.repository.UserRepository;
 import at.ikic.tradingPlatform.dto.response.AuthResponseDto;
 import at.ikic.tradingPlatform.security.JwtTokenProvider;
+import at.ikic.tradingPlatform.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,9 @@ public class AuthController {
     
     @Autowired
     private AuthResponseMapper authResponseMapper;
+    
+    @Autowired
+    private AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDto> register(@RequestBody User user) {
@@ -74,6 +80,22 @@ public class AuthController {
         } catch (Exception e) {
             System.err.println("Login failed: " + e.getMessage());
             return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    @GetMapping("/me")
+    public ResponseEntity<UserDto> getCurrentUser() {
+        try {
+            User currentUser = authService.getAuthenticatedUser();
+            
+            UserDto userDto = new UserDto();
+            userDto.setId(currentUser.getId());
+            userDto.setUserName(currentUser.getUserName());
+            userDto.setMail(currentUser.getMail());
+            
+            return ResponseEntity.ok(userDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 }

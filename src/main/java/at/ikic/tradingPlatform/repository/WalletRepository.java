@@ -2,10 +2,10 @@ package at.ikic.tradingPlatform.repository;
 
 import at.ikic.tradingPlatform.entity.Wallet;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-public interface WalletRepository extends JpaRepository <Wallet, UUID>{
-
-
+@Repository
+public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 }

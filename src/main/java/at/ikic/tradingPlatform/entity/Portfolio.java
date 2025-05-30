@@ -1,19 +1,27 @@
 package at.ikic.tradingPlatform.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "portfolio")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Portfolio {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToMany
-    private List<Asset> assets = new ArrayList<>();
+    // One-to-Many Beziehung zu PortfolioItems
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PortfolioItem> portfolioItems;
+
+    // ... andere Portfolio-Felder falls vorhanden ...
 }

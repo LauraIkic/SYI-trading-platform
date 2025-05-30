@@ -58,6 +58,18 @@ public class AuthService implements UserDetailsService {
 
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return userRepository.findByMail(authentication.getName());
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        String email = authentication.getName();
+        User user = userRepository.findByMail(email);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        return user;
     }
 }

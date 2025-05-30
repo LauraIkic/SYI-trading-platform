@@ -73,8 +73,9 @@ public class OrderCreateController {
             orderRepository.save(order);
             System.out.println("Order saved with ID: " + order.getId());
 
-            // Temporär Market-Service deaktivieren
-            // orderService.addOrderToMarket(order);
+            // AKTIVIERT: Market-Service
+            orderService.addOrderToMarket(order);
+            System.out.println("Order sent to market");
 
             return ResponseEntity.ok(order);
 
