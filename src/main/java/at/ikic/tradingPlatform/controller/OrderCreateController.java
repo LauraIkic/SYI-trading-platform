@@ -6,6 +6,7 @@ import at.ikic.tradingPlatform.entity.Order;
 import at.ikic.tradingPlatform.kafka.consumer.CoinConsumer;
 import at.ikic.tradingPlatform.mapper.OrderCreateMapper;
 import at.ikic.tradingPlatform.repository.OrderRepository;
+import at.ikic.tradingPlatform.service.AuthService;
 import at.ikic.tradingPlatform.service.OrderService;
 import at.ikic.tradingPlatform.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -33,6 +36,10 @@ public class OrderCreateController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private AuthService authService;
+
+
     @PostMapping("/order")
     public ResponseEntity<Order> createOrder(@RequestBody OrderCreateDto data){
         Coin c =  coinConsumer.coins.stream()
@@ -52,5 +59,12 @@ public class OrderCreateController {
         orderService.addOrderToMarket(order);
 
         return ResponseEntity.ok(order);
+    }
+
+    @GetMapping("/order")
+    private ResponseEntity<List<Order>> getOrders() {
+        UUID id = authService.getAuthenticatedUser().getId();
+
+        return ResponseEntity.ok(orderRepository.findByUserId(id));
     }
 }

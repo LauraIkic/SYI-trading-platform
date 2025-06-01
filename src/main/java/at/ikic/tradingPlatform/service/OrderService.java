@@ -1,6 +1,8 @@
 package at.ikic.tradingPlatform.service;
 
 import at.ikic.tradingPlatform.entity.Order;
+import at.ikic.tradingPlatform.entity.User;
+import at.ikic.tradingPlatform.enums.TransactionStatus;
 import at.ikic.tradingPlatform.kafka.producer.OrderRequestProducer;
 import at.ikic.tradingPlatform.repository.OrderRepository;
 import jakarta.transaction.Transactional;
@@ -20,5 +22,15 @@ public class OrderService {
     @Transactional
     public void addOrderToMarket(Order order) {
         orderRequestProducer.sendOrderToKafka(order);
+    }
+
+    @Transactional
+    public void updateOrderState(Order order) {
+        System.out.println("order status change: ");
+        System.out.println( order.getId().toString());
+
+        order.setStatus(TransactionStatus.CLOSED);
+        orderRepository.save(order);
+        System.out.println(order.getStatus());
     }
 }
